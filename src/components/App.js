@@ -3,7 +3,6 @@ import AppRouter from "components/Router";
 import { auth } from "fbinstance";
 
 function App() {
-  console.log(auth.currentUser);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <>
