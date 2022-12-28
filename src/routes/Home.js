@@ -1,18 +1,34 @@
 import { dbServise } from "fbinstance";
-import { addDoc, collection } from "firebase/firestore";
-import React, { useState } from "react";
+import { addDoc, getDocs, query, collection, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 
 const Home = () => {
   const [nweet, setNweet] = useState("");
+  const [nweets, setNweets] = useState([]);
+  const getNweets = async () => {
+    const q = query(collection(dbServise, "nweets"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const newwtObj = {
+        ...doc.data(),
+        id: doc.id,
+      };
+      setNweets((prev) => [newwtObj, ...prev]);
+    });
+  };
+
+  useEffect(() => {
+    getNweets();
+  }, []);
+
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
-      const docRef = await addDoc(collection(dbServise, "nweets"), {
+      await addDoc(collection(dbServise, "nweets"), {
         nweet,
         createdAt: Date.now(),
       });
       setNweet("");
-      console.log(docRef.id);
     } catch (err) {
       console.log(err);
     }
@@ -37,6 +53,14 @@ const Home = () => {
         />
         <input type="submit" value="Nweet" />
       </form>
+      <div>
+        {console.log(nweets)}
+        {nweets.map((nweet) => (
+          <div>
+            <h4>{nweet.nweet}</h4>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
