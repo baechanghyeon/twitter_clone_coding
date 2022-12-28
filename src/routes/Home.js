@@ -1,32 +1,39 @@
 import { dbServise } from "fbinstance";
-import { addDoc, getDocs, query, collection, getDoc } from "firebase/firestore";
+import {
+  addDoc,
+  query,
+  collection,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
+
 import React, { useEffect, useState } from "react";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
-  const getNweets = async () => {
-    const q = query(collection(dbServise, "nweets"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      const newwtObj = {
-        ...doc.data(),
-        id: doc.id,
-      };
-      setNweets((prev) => [newwtObj, ...prev]);
-    });
-  };
 
   useEffect(() => {
-    getNweets();
+    const q = query(
+      collection(dbServise, "nweets"),
+      orderBy("createdAt", "desc")
+    );
+    onSnapshot(q, (snapshot) => {
+      const nweetArr = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setNweets(nweetArr);
+    });
   }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
       await addDoc(collection(dbServise, "nweets"), {
-        nweet,
+        text: nweet,
         createdAt: Date.now(),
+        creatorId: userObj.uid,
       });
       setNweet("");
     } catch (err) {
@@ -57,7 +64,7 @@ const Home = () => {
         {console.log(nweets)}
         {nweets.map((nweet) => (
           <div>
-            <h4>{nweet.nweet}</h4>
+            <h4>{nweet.text}</h4>
           </div>
         ))}
       </div>
