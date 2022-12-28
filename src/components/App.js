@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import AppRouter from "components/Router";
-import { auth } from "fbinstance";
+import { authServise } from "fbinstance";
 
 function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    authServise.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
       } else {
