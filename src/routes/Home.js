@@ -1,3 +1,4 @@
+import Nweet from "components/Nweet";
 import { dbServise } from "fbinstance";
 import {
   addDoc,
@@ -61,11 +62,12 @@ const Home = ({ userObj }) => {
         <input type="submit" value="Nweet" />
       </form>
       <div>
-        {console.log(nweets)}
         {nweets.map((nweet) => (
-          <div>
-            <h4>{nweet.text}</h4>
-          </div>
+          <Nweet
+            key={nweet.id}
+            nweetObj={nweet}
+            isOwner={nweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </div>
