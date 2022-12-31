@@ -11,10 +11,15 @@ const Nweet = ({ nweetObj, isOwner }) => {
 
   const onDeleteClick = async () => {
     const ok = window.confirm("Are ypu sure you want to delete this nweet?");
-    const urlRef = ref(storageService, nweetObj.attachmentUrl);
     if (ok) {
-      await deleteDoc(NweetTextRef);
-      await deleteObject(storageService, urlRef);
+      try {
+        await deleteDoc(NweetTextRef);
+        if (nweetObj.attachmentUrl !== "") {
+          await deleteObject(ref(storageService, nweetObj.attachmentUrl));
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -56,6 +61,14 @@ const Nweet = ({ nweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{nweetObj.text}</h4>
+          {nweetObj.attachmentUrl && (
+            <img
+              src={nweetObj.attachmentUrl}
+              alt="preview Img"
+              width="50px"
+              height="50px"
+            />
+          )}
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Btn</button>

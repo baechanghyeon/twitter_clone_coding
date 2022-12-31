@@ -59,6 +59,7 @@ const Home = ({ userObj }) => {
     await addDoc(collection(dbServise, "nweets"), nweetObj);
     setNweet("");
     setAttachment("");
+    fileInput.current.value = null;
   };
 
   const onChange = (event) => {
