@@ -13,11 +13,13 @@ function App() {
         setUserObj({
           displayName: user.displayName,
           uid: user.uid,
-          updateProfile: (args) =>
+          updateProfile: () =>
             user.updateProfile(user, { displayName: user.displayName }),
         });
       }
       setInit(true);
+      setIsLoggedIn(true);
+      console.log(init);
     });
   }, []);
 
@@ -30,6 +32,7 @@ function App() {
         user.updateProfile(user, { displayName: user.displayName }),
     });
   };
+
   return (
     <>
       {init ? (
