@@ -1,10 +1,10 @@
-import { dbServise } from "fbinstance";
+import { authServise } from "fbinstance";
 import { getAuth, updateProfile } from "firebase/auth";
 // import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const Profile = ({ userObj }) => {
+const Profile = ({ refreshUser, userObj }) => {
   const auth = getAuth();
   const history = useHistory();
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
@@ -40,8 +40,11 @@ const Profile = ({ userObj }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
     if (userObj.displayName !== newDisplayName) {
-      await updateProfile(userObj, { displayName: newDisplayName });
+      await updateProfile(authServise.currentUser, {
+        displayName: newDisplayName,
+      });
     }
+    refreshUser();
   };
 
   return (
