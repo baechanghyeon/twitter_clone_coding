@@ -6,6 +6,7 @@ import Home from "routes/Home";
 import Navigation from "components/Navigation";
 
 const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
+  console.log(isLoggedIn);
   return (
     <Router>
       {isLoggedIn && <Navigation userObj={userObj} />}

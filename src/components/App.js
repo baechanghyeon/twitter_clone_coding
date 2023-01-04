@@ -16,10 +16,11 @@ function App() {
           updateProfile: () =>
             user.updateProfile(user, { displayName: user.displayName }),
         });
+        setIsLoggedIn(true);
+      } else {
+        setUserObj(null);
       }
       setInit(true);
-      setIsLoggedIn(true);
-      console.log(init);
     });
   }, []);
 

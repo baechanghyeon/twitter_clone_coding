@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 const Profile = ({ refreshUser, userObj }) => {
   const auth = getAuth();
   const history = useHistory();
-  const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
+  const [newDisplayName, setNewDisplayName] = useState(userObj?.displayName);
 
   // LogOut Event Click
   const onLogOutClick = () => {
